@@ -1,11 +1,7 @@
-import {
-  isRouteErrorResponse,
-  useNavigate,
-  useRouteError,
-} from 'react-router-dom';
+import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import LinkButton from "./LinkButton";
 
 function ErrorMessage() {
-  const navigate = useNavigate();
   const error = useRouteError();
 
   return (
@@ -13,16 +9,16 @@ function ErrorMessage() {
       <h1>
         {isRouteErrorResponse(error)
           ? `${error.status} ${error.statusText}`
-          : 'Something went wrong 😢'}
+          : "Something went wrong 😢"}
       </h1>
       <p>
         {isRouteErrorResponse(error)
           ? error.data
           : error instanceof Error
           ? error.message
-          : 'Unknown error'}
+          : "Unknown error"}
       </p>
-      <button onClick={() => navigate(-1)}>&larr; Go back</button>
+      <LinkButton to="-1">&larr; Go back</LinkButton>
     </div>
   );
 }
