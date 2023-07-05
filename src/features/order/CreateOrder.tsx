@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   ActionFunctionArgs,
   Form,
   redirect,
   useActionData,
   useNavigation,
-} from "react-router-dom";
+} from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { ICartItem, INewOrder, INewOrderErrors } from "../../types/types";
-import { createOrder } from "../../services/apiRestaurant";
-import Button from "../../ui/Button";
+import { ICartItem, INewOrder, INewOrderErrors } from '../../types/types';
+import { RootState } from '../../store';
+import Button from '../../ui/Button';
+import { createOrder } from '../../services/apiRestaurant';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str: string) =>
@@ -20,21 +22,21 @@ const isValidPhone = (str: string) =>
 const fakeCart: ICartItem[] = [
   {
     pizzaId: 12,
-    name: "Mediterranean",
+    name: 'Mediterranean',
     quantity: 2,
     unitPrice: 16,
     totalPrice: 32,
   },
   {
     pizzaId: 6,
-    name: "Vegetale",
+    name: 'Vegetale',
     quantity: 1,
     unitPrice: 13,
     totalPrice: 13,
   },
   {
     pizzaId: 11,
-    name: "Spinach and Mushroom",
+    name: 'Spinach and Mushroom',
     quantity: 1,
     unitPrice: 15,
     totalPrice: 15,
@@ -42,10 +44,11 @@ const fakeCart: ICartItem[] = [
 ];
 
 function CreateOrder() {
+  const username = useSelector((state: RootState) => state.user.username);
   const formErrors = useActionData() as INewOrderErrors;
   const navigation = useNavigation();
 
-  const isSubmitting = navigation.state === "loading";
+  const isSubmitting = navigation.state === 'loading';
   const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart;
 
@@ -58,7 +61,13 @@ function CreateOrder() {
       <Form method="POST">
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-32">First Name</label>
-          <input className="input grow" type="text" name="customer" required />
+          <input
+            className="input grow"
+            type="text"
+            name="customer"
+            required
+            defaultValue={username}
+          />
         </div>
 
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -102,7 +111,7 @@ function CreateOrder() {
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
           <Button disabled={isSubmitting}>
-            {isSubmitting ? "Placing order..." : "Order now"}
+            {isSubmitting ? 'Placing order...' : 'Order now'}
           </Button>
         </div>
       </Form>
@@ -119,23 +128,22 @@ export async function action({ request }: ActionFunctionArgs) {
     address: data.address as string,
     phone: data.phone as string,
     cart: JSON.parse(data.cart as string),
-    priority: data.priority === "on",
+    priority: data.priority === 'on',
   };
 
   const errors: INewOrderErrors = {};
 
   if (!isValidPhone(order.phone)) {
     errors.phone =
-      "Please, give us  your correct phone number. We might need contact you.";
+      'Please, give us  your correct phone number. We might need contact you.';
   }
 
   if (Object.keys(errors).length > 0) {
     return errors;
   }
 
-  // const newOrder = await createOrder(order);
-  // return redirect(`/order/${newOrder.id}`);
-  return null;
+  const newOrder = await createOrder(order);
+  return redirect(`/order/${newOrder.id}`);
 }
 
 export default CreateOrder;
