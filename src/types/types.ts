@@ -35,10 +35,16 @@ export interface INewOrder {
   address: string;
   cart: ICartItem[];
   priority: boolean;
+  position: string;
 }
 
 export interface INewOrderErrors {
   phone?: string;
+}
+
+export interface IPosition {
+  latitude: number;
+  longitude: number;
 }
 
 ////////////////////////////////////////////////////////
@@ -58,4 +64,47 @@ export interface IOrderApiResponse {
 export interface INewOrderApiResponse {
   status: 'success' | 'fail';
   data: IOrder;
+}
+
+export interface IGeocodingAddressApiResponse {
+  latitude: number;
+  longitude: number;
+  continent: string;
+  lookupSource: string;
+  continentCode: string;
+  localityLanguageRequested: string;
+  city: string;
+  countryName: string;
+  countryCode: string;
+  postcode: string;
+  principalSubdivision: string;
+  principalSubdivisionCode: string;
+  plusCode: string;
+  locality: string;
+  localityInfo: LocalityInfo;
+}
+
+interface LocalityInfo {
+  LikelyLand: boolean;
+  administrative: Administrative[];
+  informative: Informative[];
+}
+
+interface Administrative {
+  name: string;
+  description: string;
+  order: number;
+  adminLevel: number;
+  isoCode?: string;
+  wikidataId: string;
+  geonameId?: number;
+}
+
+interface Informative {
+  name: string;
+  description: string;
+  order: number;
+  isoCode?: string;
+  wikidataId?: string;
+  geonameId?: number;
 }

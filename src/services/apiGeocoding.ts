@@ -1,3 +1,5 @@
+import { IGeocodingAddressApiResponse } from '../types/types';
+
 export async function getAddress({
   latitude,
   longitude,
@@ -10,6 +12,6 @@ export async function getAddress({
   );
   if (!res.ok) throw Error('Failed getting address');
 
-  const data = await res.json();
+  const data: IGeocodingAddressApiResponse = await res.json();
   return data;
 }

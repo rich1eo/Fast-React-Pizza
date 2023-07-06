@@ -2,7 +2,6 @@ import {
   IMenuApiResponse,
   INewOrder,
   INewOrderApiResponse,
-  IOrder,
   IOrderApiResponse,
 } from '../types/types';
 
@@ -48,8 +47,12 @@ export async function createOrder(newOrder: INewOrder) {
   }
 }
 
-// TODO: type updateObj
-export async function updateOrder(id: string, updateObj: IOrder) {
+export async function updateOrder(
+  id: string,
+  updateObj: {
+    priority: boolean;
+  }
+) {
   try {
     const res = await fetch(`${API_URL}/order/${id}`, {
       method: 'PATCH',
