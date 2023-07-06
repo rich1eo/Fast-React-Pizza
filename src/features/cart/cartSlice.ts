@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { ICartItem } from '../../types/types';
 import { RootState } from '../../store';
@@ -66,9 +66,9 @@ export const getCart = (state: RootState) => state.cart.cart;
 export const getCurrentQuantityById = (id: number) => (state: RootState) =>
   state.cart.cart.find((cartItem) => cartItem.pizzaId === id)?.quantity ?? 0;
 
-// TODO: Chech for Reselect lib for performance optimization
-export const getTotalCartInfo = (state: RootState) =>
-  state.cart.cart.reduce(
+const cart = getCart;
+export const getTotalCartInfo = createSelector([cart], (cart) =>
+  cart.reduce(
     (total, pizza) => {
       return {
         totalPrice: total.totalPrice + pizza.totalPrice,
@@ -76,4 +76,5 @@ export const getTotalCartInfo = (state: RootState) =>
       };
     },
     { totalPrice: 0, totalPizzas: 0 }
-  );
+  )
+);

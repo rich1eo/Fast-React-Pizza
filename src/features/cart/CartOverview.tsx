@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTotalCartInfo } from './cartSlice';
+import { useAppSelector } from '../../hooks';
 
 function CartOverview() {
-  const totalInfo = useSelector(getTotalCartInfo);
+  const totalInfo = useAppSelector(getTotalCartInfo);
 
   if (!totalInfo.totalPrice) return null;
 

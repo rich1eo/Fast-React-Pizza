@@ -1,12 +1,11 @@
-import { useSelector, useDispatch } from 'react-redux';
-
 import { addItem, getCurrentQuantityById } from '../cart/cartSlice';
 import { formatCurrency } from '../../utils/helpers';
 import { ICartItem, IPizza } from '../../types/types';
 
 import Button from '../../ui/Button';
 import DeleteCartItem from '../cart/DeleteCartItem';
-import UpdateCartItemQuantity from '../cart/updateCartItemQuantity';
+import UpdateCartItemQuantity from '../cart/UpdateCartItemQuantity';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 interface MenuItemProps {
   pizza: IPizza;
@@ -15,8 +14,8 @@ interface MenuItemProps {
 function MenuItem({ pizza }: MenuItemProps) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
 
-  const currentQuantity = useSelector(getCurrentQuantityById(id));
-  const dispatch = useDispatch();
+  const currentQuantity = useAppSelector(getCurrentQuantityById(id));
+  const dispatch = useAppDispatch();
 
   const isInCart = currentQuantity > 0;
 

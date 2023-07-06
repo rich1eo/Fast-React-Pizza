@@ -5,8 +5,8 @@ interface ButtonProps {
   children: ReactNode;
   disabled?: boolean;
   to?: string;
-  type?: 'primary' | 'secondary' | 'round';
-  onClick?(): void;
+  type?: 'primary' | 'secondary' | 'round' | 'position';
+  onClick?(event: React.MouseEvent<HTMLButtonElement>): void;
 }
 
 export default function Button({
@@ -25,10 +25,14 @@ export default function Button({
   const round =
     'inline-block text-sm rounded-full bg-yellow-400 px-2.5 py-1 font-semibold uppercase tracking-wide text-stone-800 transition duration-300 hover:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed';
 
+  const position =
+    'inline-block text-xs rounded-full bg-yellow-400 px-3 py-2 font-semibold uppercase tracking-wide text-stone-800 transition duration-300 hover:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed md:px-2.5 md:py-2.5 md:text-sm';
+
   const styles = {
     primary: base,
-    secondary: secondary,
-    round: round,
+    secondary,
+    round,
+    position,
   };
 
   if (to) {

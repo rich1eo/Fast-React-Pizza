@@ -1,7 +1,7 @@
 import { ICartItem } from '../../types/types';
 import { formatCurrency } from '../../utils/helpers';
 import DeleteCartItem from './DeleteCartItem';
-import UpdateCartItemQuantity from './updateCartItemQuantity';
+import UpdateCartItemQuantity from './UpdateCartItemQuantity';
 
 interface CartItemProp {
   item: ICartItem;
